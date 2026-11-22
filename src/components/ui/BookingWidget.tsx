@@ -1,0 +1,122 @@
+"use client";
+
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { todayIso } from "@/lib/format";
+import { DatePicker } from "./DatePicker";
+
+const bookingSchema = z.object({
+  checkIn: z.string().min(1, "Check-in date is required"),
+  checkOut: z.string().min(1, "Check-out date is required"),
+});
+
+type BookingFormData = z.infer<typeof bookingSchema>;
+
+interface BookingWidgetProps {
+  bookUrl?: string;
+}
+
+function addDays(dateString: string, days: number) {
+  const date = new Date(dateString);
+  date.setHours(12, 0, 0, 0);
+  date.setDate(date.getDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+export default function BookingWidget({ bookUrl }: BookingWidgetProps) {
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<BookingFormData>({
+    resolver: zodResolver(bookingSchema),
+    defaultValues: {
+      checkIn: todayIso(),
+      checkOut: addDays(todayIso(), 1),
+    },
+  });
+
+  const checkIn = watch("checkIn");
+  const checkOut = watch("checkOut");
+
+  useEffect(() => {
+    if (!checkIn) {
+      if (checkOut) {
+        setValue("checkOut", "", { shouldValidate: true });
+      }
+      return;
+    }
+
+    if (!checkOut) {
+      setValue("checkOut", addDays(checkIn, 1), { shouldValidate: true });
+      return;
+    }
+
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+
+    if (checkOutDate <= checkInDate) {
+      setValue("checkOut", addDays(checkIn, 1), { shouldValidate: true });
+    }
+  }, [checkIn, checkOut, setValue]);
+
+  const onSubmit = (data: BookingFormData) => {
+    const url = new URL(bookUrl || window.location.href);
+    url.searchParams.set("hotel_check_in", data.checkIn);
+    url.searchParams.set("hotel_check_out", data.checkOut);
+    window.open(url.toString(), "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div className="space-y-6">
+      <p
+        className="luxury-label text-center "
+        style={{ color: "var(--luxury-gold-text)" }}
+      >
+        Check Availability
+      </p>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Controller
+          name="checkIn"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              id="booking-checkin"
+              label="Check-in"
+              min={todayIso()}
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.checkIn?.message}
+            />
+          )}
+        />
+        <Controller
+          name="checkOut"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              id="booking-checkout"
+              label="Check-out"
+              min={checkIn || todayIso()}
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.checkOut?.message}
+            />
+          )}
+        />
+
+        <button
+          type="submit"
+          className="luxury-btn luxury-btn-solid w-full justify-center mt-2 hover:cursor-pointer"
+        >
+          Check Availability
+        </button>
+      </form>
+    </div>
+  );
+}

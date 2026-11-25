@@ -47,7 +47,7 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
     >
       {/* Logo on the left; booking + hamburger on the right */}
               <p
-          className={`hidden ${ !isScrolled && "lg:block"}  flex-1 px-6 text-center font-[family-name:var(--font-script),cursive] text-[18px] xl:text-[26px] ${tone} ${hidden} transition-opacity duration-200`}
+          className={`hidden ${ !isScrolled && "lg:block"}  text-white flex-1 px-6 text-center font-[family-name:var(--font-script),cursive] text-[18px] xl:text-[26px] ${tone} ${hidden} transition-opacity duration-200`}
         >
           Where Heritage Meets Comfort - Experience the Heart of Kathmandu.
         </p>

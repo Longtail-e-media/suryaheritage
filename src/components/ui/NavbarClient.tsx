@@ -25,7 +25,7 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 100);
     };
     handleScroll(); // sync on mount (scroll restoration / refresh mid-page)
     window.addEventListener("scroll", handleScroll);

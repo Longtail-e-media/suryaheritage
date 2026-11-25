@@ -21,37 +21,6 @@ function getServiceIcon(item: { slug?: string; title?: string }) {
   return Sparkles;
 }
 
-const HTML_ENTITIES: Record<string, string> = {
-  amp: "&",
-  lt: "<",
-  gt: ">",
-  quot: '"',
-  "#39": "'",
-  apos: "'",
-  nbsp: " ",
-};
-
-function decodeHtmlEntities(text: string): string {
-  return text.replace(/&(#\d+|#x[0-9a-f]+|[a-z]+);/gi, (match, entity) => {
-    if (entity[0] === "#") {
-      const code =
-        entity[1]?.toLowerCase() === "x"
-          ? parseInt(entity.slice(2), 16)
-          : parseInt(entity.slice(1), 10);
-      return Number.isNaN(code) ? match : String.fromCodePoint(code);
-    }
-    return HTML_ENTITIES[entity.toLowerCase()] ?? match;
-  });
-}
-
-function getFeaturePoints(text: string): string[] {
-  return decodeHtmlEntities(text)
-    .split(/(?<=[.!?])\s+/)
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .slice(0, 3);
-}
-
 export default async function ServicesSection() {
   const servicesData = (await getServices(2)) || [];
   const services = servicesData[0]?.items || [];
@@ -98,10 +67,7 @@ export default async function ServicesSection() {
             const altText =
               item.gallery_images?.[0]?.title || item.title || "Service";
             const href = item.linksrc ?? "/";
-            const description = (item.content_0 || item.description || "")
-              .replace(/<\/?[^>]+>/g, "")
-              .trim();
-            const features = getFeaturePoints(description);
+            const description = item.content_0 || item.description || "";
             const Icon = getServiceIcon(item);
             const reversed = idx % 2 === 1;
 
@@ -152,18 +118,11 @@ export default async function ServicesSection() {
                     {item.title}
                   </h3>
 
-                  {features.length > 0 && (
-                    <ul className="mb-8 space-y-3">
-                      {features.map((point, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-3 rounded-2xl border border-brick/10 bg-white/60 px-5 py-4 text-base font-light leading-relaxed text-ink/75 transition hover:border-gold/60 hover:shadow-lg"
-                        >
-                          <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
+                  {description && (
+                    <div
+                      className="mb-8 border-l-2 border-gold/60 pl-6 text-base font-light leading-8 text-ink/70 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_strong]:font-medium [&_strong]:text-ink [&_ul]:space-y-2 [&_li]:relative [&_li]:pl-6 [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-3 [&_li]:before:h-1.5 [&_li]:before:w-1.5 [&_li]:before:rounded-full [&_li]:before:bg-gold [&_li]:before:content-[''] [&_a]:text-brick [&_a]:underline"
+                      dangerouslySetInnerHTML={{ __html: description }}
+                    />
                   )}
 
                   <Link

@@ -178,8 +178,8 @@ export default function RoomsSection({
                     <button
                       onClick={() => emblaApi?.scrollTo(i)}
                       aria-current={i === activeIndex}
-                      className={`relative  text-xs uppercase tracking-[0.2em] transition-colors ${
-                        i === activeIndex ? "text-black border-1 rounded-2xl px-3 py-2" : "text-black/30"
+                      className={`relative  text-xs uppercase tracking-[0.2em] px-3 py-2 transition-colors ${
+                        i === activeIndex ? "text-black border-1 rounded-2xl " : "text-black/30"
                       }`}
                     >
                       <span className="mr-2 font-serif text-sm">{pad(i + 1)}</span>

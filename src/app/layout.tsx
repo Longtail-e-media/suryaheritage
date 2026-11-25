@@ -88,6 +88,12 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col font-sans">
         {children}
+        {/* DEMO ONLY: block every link click (capture phase beats Next <Link>). Remove for launch. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");if(a){e.preventDefault();e.stopPropagation()}},true)`,
+          }}
+        />
         {/* Analytics: GA4 + FB Pixel — injected only when real IDs exist in CMS */}
         <SiteScripts />
         <Analytics />

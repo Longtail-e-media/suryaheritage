@@ -25,7 +25,7 @@ export default async function AboutSection() {
   return (
 <section
   id="about"
-  className="relative overflow-hidden bg-cream  py-20 sm:py-28"
+  className="relative overflow-hidden bg-cream py-20 sm:py-28 before:pointer-events-none before:absolute before:bottom-0 before:right-0 before:h-64 before:w-64 before:bg-[url('/dhara.png')] before:bg-contain before:bg-top-right before:bg-no-repeat before:opacity-20 before:content-['']"
 >
   <AboutMotion />
   <div className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-gold/15 blur-3xl" />

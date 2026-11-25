@@ -26,6 +26,11 @@ const CONSTRUCTION_ONLY_ROUTES = new Set(["/reach-us"]);
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // DEMO ONLY: only the home page is reachable; skip files in /public (have an extension). Remove for launch.
+  if (pathname !== "/" && !/\.\w+$/.test(pathname)) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
   const siteRegulars = await getSiteRegulars();
   if (siteRegulars?.site_under_contsruction !== "1") {
     return NextResponse.next();

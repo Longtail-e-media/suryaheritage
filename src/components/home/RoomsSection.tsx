@@ -94,7 +94,7 @@ export default function RoomsSection({
         {pad(activeIndex + 1)}
       </span>
 
-      <div className="relative mx-auto max-w-[1400px] px-6 py-20 md:px-12 lg:px-24">
+      <div className="relative mx-auto max-w-[1400px] px-6 py-20 md:px-12 lg:px-24 relative before:absolute before:bottom-0 before:right-0 before:h-80 before:w-80 before:bg-[url('/stupa.png')] before:bg-contain before:bg-bottom-right before:bg-no-repeat before:opacity-30 before:content-['']">
         {/* Header */}
         <div className="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between animate-fade-in-up">
           <div>

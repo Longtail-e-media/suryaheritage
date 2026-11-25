@@ -42,7 +42,7 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
           ? "bg-white shadow-[0_8px_30px_rgba(0,0,0,0.15)] py-1"
           : pathname === "/"
             ? "bg-gradient-to-b from-black/50 to-transparent py-4"
-            : "bg-brand-orange py-3"
+            : " py-3"
       }`}
     >
       {/* Logo on the left; booking + hamburger on the right */}

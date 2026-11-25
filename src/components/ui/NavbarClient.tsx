@@ -27,6 +27,7 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
+    handleScroll(); // sync on mount (scroll restoration / refresh mid-page)
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -36,9 +37,9 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
 
   return (
     <nav
-      className={` ${pathname == "/" ? " fixed" : ""} top-0 left-0 right-0 z-[70] transition-all duration-300 ${
+      className={` ${pathname == "/" ? "fixed" : "sticky"} top-0 left-0 right-0 z-[70] transition-all duration-300 ${
         isScrolled
-          ? "fixed bg-white shadow-[0_8px_30px_rgba(0,0,0,0.15)] py-1"
+          ? "bg-white shadow-[0_8px_30px_rgba(0,0,0,0.15)] py-1"
           : pathname === "/"
             ? "bg-gradient-to-b from-black/50 to-transparent py-4"
             : "bg-brand-orange py-3"

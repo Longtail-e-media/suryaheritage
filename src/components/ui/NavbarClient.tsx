@@ -37,7 +37,7 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
 
   return (
     <nav
-      className={` ${pathname == "/" ? "fixed" : "sticky"} top-0 left-0 right-0 z-[70] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[70] transition-all duration-300 ${
         isScrolled
           ? "bg-white shadow-[0_8px_30px_rgba(0,0,0,0.15)] py-1"
           : pathname === "/"

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Poppins } from "next/font/google";
+import { Playfair_Display, Poppins, Caveat } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/ui/Analytics";
 import JsonLd from "@/components/seo/JsonLd";
@@ -13,6 +13,13 @@ const heading = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+const script = Caveat({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -50,7 +57,7 @@ export default async function RootLayout({
   ]);
 
   return (
-    <html lang={site.locale} className={`${heading.variable} ${productSans.variable} h-full antialiased`} suppressHydrationWarning={true}>
+    <html lang={site.locale} className={`${heading.variable} ${productSans.variable} ${script.variable} h-full antialiased`} suppressHydrationWarning={true}>
       <head>
         {/* Preconnect to all external origins — eliminates DNS + TCP + TLS round-trips */}
         <link rel="preconnect" href="https://mayurstay.com" crossOrigin="anonymous" />

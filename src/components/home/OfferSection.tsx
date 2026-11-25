@@ -13,7 +13,7 @@ export default async function OfferSection() {
   if (offers.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden bg-white">
+    <section className="relative overflow-hidden">
       <div className="max-w-[1400px] mx-auto py-20 px-6 md:px-12 lg:px-24">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 animate-fade-in-up">
@@ -34,8 +34,48 @@ export default async function OfferSection() {
           </Link>
         </div>
 
+        {/* Single offer: image one side, content the other */}
+        {offers.length === 1 && (() => {
+          const item = offers[0];
+          const imageSrc = item.image || (item.img && item.img[0]);
+          const plainTitle = item.title?.replace(/<[^>]+>/g, "") || "";
+          const desc = (item.content || "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").trim();
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center animate-fade-in-up">
+              <div className="relative h-[350px] md:h-[500px] overflow-hidden">
+                {imageSrc ? (
+                  <Image
+                    src={imageSrc}
+                    alt={plainTitle || "Offer image"}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#f9f7f2]" />
+                )}
+              </div>
+              <div>
+                {item.end_date && (
+                  <div className="inline-flex items-center gap-2 mb-4 text-xs font-medium tracking-wide text-gold-text">
+                    <CalendarDays className="w-3.5 h-3.5" />
+                    Expires {item.end_date}
+                  </div>
+                )}
+                <h3 className="text-2xl md:text-3xl font-light tracking-wide mb-4">{item.title}</h3>
+                {desc && <p className="opacity-80 leading-relaxed line-clamp-5 mb-8">{desc}</p>}
+                <p>{item.content}</p>
+                <Link href={`/offers/${item.slug}`} className="luxury-btn group inline-flex items-center gap-4 px-10 py-4">
+                  <span>View Offer</span>
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {offers.length > 1 && <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {offers.map((item: any, idx: number) => {
             const imageSrc = item.image || (item.img && item.img[0]);
             const plainTitle = item.title?.replace(/<[^>]+>/g, "") || "";
@@ -85,7 +125,7 @@ export default async function OfferSection() {
               </Link>
             );
           })}
-        </div>
+        </div>}
 
         {/* Mobile View All */}
         <div className="mt-12 flex justify-center md:hidden">

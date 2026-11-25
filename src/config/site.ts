@@ -12,34 +12,34 @@ export const SITE_URL =
 
 /** Core brand identity. */
 export const site = {
-  name: "Hotel Diamond Palace Pvt. Ltd",
-  shortName: "Hotel Diamond Palace",
-  title: "Hotel Diamond Palace Pvt. Ltd | Nepalgunj, Nepal",
+  name: "Surya Heritage Hotel Pvt. Ltd",
+  shortName: "Surya Heritage Hotel",
+  title: "Surya Heritage Hotel Pvt. Ltd | Thamel, Kathmandu, Nepal",
   description:
-    "Hotel Diamond Palace offers comfortable accommodation in Nepalgunj, steps from the sacred Bageshwori Temple and close to Banke National Park. Guests enjoy modern comfort, dining, and versatile event spaces.",
+    "Discover a harmonious blend of tradition and modernity at Surya Heritage Hotel, a prestigious 4-star boutique in Kathmandu. Located just 1.5 km from historic Hanuman Dhoka, guests can explore heritage while enjoying serene rooms, elegant banquet halls, exquisite dining, and panoramic rooftop views.",
   keywords:
-    "Hotel Diamond Palace, Nepalgunj hotel, Bageshwori Temple, Banke National Park, luxury hotel Nepal, 4-star hotel Nepalgunj, business hotel Nepal",
+    "Surya Heritage Hotel, Kathmandu hotel, Thamel hotel, Hanuman Dhoka, boutique hotel Kathmandu, 4-star hotel Kathmandu, banquet hall Kathmandu",
   locale: "en",
   schemaType: ["Hotel", "LodgingBusiness"] as readonly string[],
 } as const;
 
 /** Contact channels. */
 export const contact = {
-  phone: "081-530835",
-  phoneE164: "081-530835",
-  whatsapp: "+9779801330050",
-  email: "info@hoteldiamondpalace.com.np",
+  phone: "+977 1 4541113",
+  phoneE164: "+97714541113",
+  whatsapp: "+9779802369201",
+  email: "info@suryaheritage.com",
 } as const;
 
 /** Physical location. */
 export const address = {
-  street: "Bageshwori Tole-2, Surkhet Road",
-  locality: "Nepalgunj",
-  region: "Banke, Lumbini Province",
-  postalCode: "21900",
+  street: "Thamel-26, Gahitee, Kapurbot",
+  locality: "Kathmandu",
+  region: "Bagmati Province",
+  postalCode: "44600",
   country: "NP",
-  full: "Bageshwori Tole-2, Surkhet Road, Nepalgunj, Banke, Nepal",
-  geo: { latitude: 28.05, longitude: 81.6167 }, // approximate Nepalgunj coords
+  full: "Thamel-26, Gahitee, Kapurbot, Kathmandu, Nepal",
+  geo: { latitude: 27.7154, longitude: 85.3123 }, // approximate Thamel coords
   mapUrl: "https://maps.app.goo.gl/yourhotelmaplink",
 } as const;
 
@@ -74,7 +74,11 @@ export const business = {
 export const links = {
   booking:
     "https://www.mayurstay.com/parklandhotel/result.php?hotel_code=OGUhbL7",
-  social: [] as string[],
+  social: [
+    "https://www.facebook.com/SuryaHeritage",
+    "https://www.instagram.com/surya_heritage_hotel",
+    "https://www.tiktok.com/@suryaheritagehotel",
+  ] as string[],
 } as const;
 
 /**

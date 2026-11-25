@@ -38,13 +38,19 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
     <nav
       className={` ${pathname == "/" ? " fixed" : ""} top-0 left-0 right-0 z-[70] transition-all duration-300 ${
         isScrolled
-          ? "fixed bg-brand-orange shadow-[0_8px_30px_rgba(0,0,0,0.15)] py-1"
+          ? "fixed bg-white shadow-[0_8px_30px_rgba(0,0,0,0.15)] py-1"
           : pathname === "/"
             ? "bg-gradient-to-b from-black/50 to-transparent py-4"
             : "bg-brand-orange py-3"
       }`}
     >
       {/* Logo on the left; booking + hamburger on the right */}
+              <p
+          className={`hidden ${ !isScrolled && "lg:block"}  flex-1 px-6 text-center font-[family-name:var(--font-script),cursive] text-[18px] xl:text-[26px] ${tone} ${hidden} transition-opacity duration-200`}
+        >
+          Where Heritage Meets Comfort - Experience the Heart of Kathmandu.
+        </p>
+
       <div className="container mx-auto flex items-center justify-between px-4">
         <div className={`flex items-center ${hidden} transition-opacity duration-200`}>
           <Link href="/" className="flex-shrink-0">
@@ -67,12 +73,14 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
           </Link>
         </div>
 
+        {/* Brand message: hidden below lg where there's no room next to logo + buttons */}
+
         <div className="flex items-center gap-3 sm:gap-4">
           <Link
             href={siteRegulars?.booking_code ?? links.booking}
             target="_blank"
             tabIndex={isSidebarOpen ? -1 : 0}
-            className={`group flex items-center gap-2 rounded-full bg-brand-base py-3 pl-6 pr-4 text-[11px] font-semibold uppercase tracking-[0.25em] text-brand-orange shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${hidden}`}
+            className={`group flex items-center gap-2 rounded-full bg-red py-3 pl-6 pr-4 text-[11px] font-semibold uppercase tracking-[0.25em] text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${hidden}`}
           >
             Book Now
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

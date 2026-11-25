@@ -1,81 +1,105 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
+import HallMotion from "./HallMotion";
 
+// area is sq.ft.; the bar under each chamber is drawn proportional to it.
 const CHAMBERS = [
-  {
-    name: "Chamber 1",
-    size: "960 sq.ft.",
-    detail:
-      "Ideal for board meetings and mid-sized events, accommodating up to 70 guests in theatre style.",
-  },
-  {
-    name: "Chamber 2",
-    size: "975 sq.ft.",
-    detail:
-      "Perfect for workshops or smaller conferences, with flexible seating for up to 65 guests.",
-  },
-  {
-    name: "Chancelier",
-    size: "2700 sq.ft.",
-    detail:
-      "Our largest venue, suited for weddings, banquets, and large-scale conferences, hosting up to 500 guests in theatre style.",
-  },
+  { name: "Chamber 1", area: 960, guests: 70, use: "Board meetings & mid-sized events" },
+  { name: "Chamber 2", area: 975, guests: 65, use: "Workshops & smaller conferences" },
+  { name: "Chancelier", area: 2700, guests: 500, use: "Weddings, banquets & large conferences" },
 ];
+const MAX_AREA = Math.max(...CHAMBERS.map((c) => c.area));
 
 export default function HallParallax() {
   return (
-    <section
-      className="relative bg-fixed bg-cover bg-center bg-no-repeat lg:mt-20"
-      style={{ backgroundImage: "url('/hall.jpg')" }}
-    >
-      {/* Dark overlay for text legibility */}
-      <div className="absolute inset-0 bg-black/70" aria-hidden="true" />
+    <section id="hall" className="relative overflow-hidden bg-brick">
+      <HallMotion />
+      {/* Oversized outline word + soft gold glow */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -right-6 top-6 select-none font-light leading-none text-transparent [-webkit-text-stroke:1px_var(--luxury-gold)] opacity-20 text-[clamp(6rem,17vw,16rem)]"
+        style={{ fontFamily: "var(--font-heading), 'Playfair Display', Georgia, serif" }}
+      >
+        Events
+      </span>
+      <div className="pointer-events-none absolute -left-40 bottom-0 h-96 w-96 rounded-full bg-gold/10 blur-[120px]" />
 
-      <div className="relative px-6 md:px-12 lg:px-24 py-24 md:py-32">
-        <div className="max-w-4xl  mx-auto animate-fade-in-up">
-          <div
-            className="luxury-label mb-4"
-            style={{ color: "var(--luxury-gold)" }}
-          >
-            Events &amp; Celebrations
+      <div className="relative mx-auto grid max-w-[1400px] items-center gap-14 px-6 py-24 md:px-12 lg:grid-cols-2 lg:gap-20 lg:px-24">
+        {/* Content */}
+        <div>
+          <div className="reveal flex items-center gap-4">
+            <span className="h-px w-12 bg-gold" />
+            <span className="text-xs font-medium uppercase tracking-[.35em] text-gold">
+              Events &amp; Celebrations
+            </span>
           </div>
-          <div className="luxury-divider mb-8" />
-          <h2 className="luxury-section-title text-white mb-8">
-            Spaces Made for Every Occasion
-          </h2>
-          <p className="luxury-subtitle text-white mb-12 leading-[1.8]">
-            At Diamond Palace Lords Plaza, we understand that every gathering
-            deserves the perfect setting. Whether you&apos;re hosting a
-            corporate seminar, a grand wedding, or an intimate celebration, our
-            versatile event spaces are designed to meet your needs. Each hall is
-            equipped with modern amenities including projectors, PA systems with
-            microphones, and LED displays, ensuring seamless presentations and
-            memorable experiences.
+          <h2 className="luxury-section-title reveal d1 mt-5">Spaces Made for Every Occasion</h2>
+          <p className="reveal d2 mt-6 max-w-xl font-light leading-[1.8]">
+            From corporate seminars to grand weddings, every hall comes with
+            projectors, PA systems and LED displays.
           </p>
 
-          <div className="grid sm:grid-cols-3 gap-6 mb-12 pb-12 border-b border-white">
-            {CHAMBERS.map((chamber) => (
-              <div key={chamber.name}>
-                <h3 className="text-white font-semibold mb-4 text-lg mb-1">
-                  {chamber.name}
-                </h3>
-                <div className="text-sm text-white uppercase  mb-3">
-                  {chamber.size}
+          <ul className="mt-10 border-y border-white/10">
+            {CHAMBERS.map((c, i) => (
+              <li
+                key={c.name}
+                className={`hall-row reveal group relative border-b border-white/10 py-6 last:border-b-0 d${i + 1}`}
+              >
+                <div className="flex items-start gap-5">
+                  <span
+                    className="hall-num text-4xl font-light leading-none md:text-5xl"
+                    style={{ fontFamily: "var(--font-heading), 'Playfair Display', Georgia, serif" }}
+                  >
+                    0{i + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                      <h3
+                        className="text-xl font-light tracking-wide transition-colors group-hover:text-gold md:text-2xl"
+                        style={{ fontFamily: "var(--font-heading), 'Playfair Display', Georgia, serif" }}
+                      >
+                        {c.name}
+                      </h3>
+                      <span className="shrink-0 text-xs uppercase tracking-[0.25em] text-gold">
+                        {c.guests} guests · {c.area.toLocaleString("en-US")} sq.ft.
+                      </span>
+                    </div>
+                    <p className="mt-1 text-sm font-light">{c.use}</p>
+                    {/* Area bar, to scale */}
+                    <div className="mt-3 h-[3px] w-full bg-white/10">
+                      <div
+                        className="hall-bar h-full bg-gold"
+                        style={{ width: `${(c.area / MAX_AREA) * 100}%` }}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <p className=" text-white leading-relaxed font-light">
-                  {chamber.detail}
-                </p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
 
-          <Link
-            href="meeting-events"
-            className="luxury-btn luxury-btn-light group"
-          >
+          <Link href="/meeting-events" className="luxury-btn group reveal d3 mt-10 w-fit">
             Explore More
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
+        </div>
+
+        {/* Image with offset gold frame, parallax + floating capacity card */}
+        <div className="hall-media reveal d1 relative mx-auto w-full max-w-xl pb-5 pr-5 lg:max-w-none">
+          <div className="hall-frame pointer-events-none absolute bottom-0 right-0 h-[calc(100%-1.25rem)] w-[calc(100%-1.25rem)] border border-gold" />
+          <div className="relative aspect-[4/5] overflow-hidden [clip-path:polygon(0_0,calc(100%-48px)_0,100%_48px,100%_100%,0_100%)]">
+            <div data-parallax className="absolute inset-x-0 -inset-y-6 will-change-transform">
+              <Image
+                src="/hall.jpg"
+                alt="Event hall"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="hall-img object-cover"
+              />
+            </div>
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          </div>
         </div>
       </div>
     </section>

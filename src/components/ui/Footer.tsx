@@ -2,7 +2,6 @@ import {
   getMenuItems,
   getSiteRegulars,
   getSocialGroup,
-  getBlogs,
   getVirtualTour,
 } from "@/lib/data";
 import Image from "next/image";
@@ -25,12 +24,14 @@ interface SocialLink {
   icon?: string;
 }
 
+const cards = [visa, amerciaexpress, mastercard, fonepay];
+const cardAlt = ["Visa", "American Express", "Mastercard", "Fonepay"];
+
 export default async function Footer() {
-  const [menuItems, siteRegulars, socialLinks, blogs, virtualTour] = await Promise.all([
+  const [menuItems, siteRegulars, socialLinks, virtualTour] = await Promise.all([
     getMenuItems(2),
     getSiteRegulars(),
     getSocialGroup(1),
-    getBlogs(),
     getVirtualTour<any>(),
   ]);
 
@@ -44,9 +45,8 @@ export default async function Footer() {
   const logoUrl = siteRegulars?.footer_logo_upload || "";
   const description = siteRegulars?.brief || site.description;
 
-  // Resilient contact details: fetchAPI fails soft (→ null when the CMS is
-  // unreachable), so never read fields directly. Fall back to the config
-  // identity and never call .split on a missing value.
+  // fetchAPI fails soft (→ null when the CMS is unreachable): never read
+  // fields directly, fall back to config and never .split a missing value.
   const fiscalAddress = siteRegulars?.fiscal_address || address.full;
   const toList = (value?: string) =>
     (value ?? "")
@@ -56,264 +56,150 @@ export default async function Footer() {
   const phoneNumbers = toList(siteRegulars?.contact_info || contact.phone);
   const emailAddresses = toList(siteRegulars?.email_address || contact.email);
 
-  const latestPosts = (blogs || []).slice(0, 3);
-
-  // Split the CMS footer menu into two even columns for the "Useful Links" block.
-  const linkMid = Math.ceil(menuItems.length / 2);
-  const linksColA = menuItems;
+  const label = "mb-4 flex items-center gap-2 border-b-2 border-orange pb-2 text-xs font-bold uppercase tracking-[.25em] text-neutral-900";
 
   return (
     <>
-      <footer style={{ background: "var(--luxury-cream)" }}>
-        {/* ── Top bar: social + newsletter ── */}
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 pt-16 pb-14">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-            {/* Social */}
-            <div className="flex flex-wrap items-center gap-6">
-              {socialLinks?.items?.length > 0 && (
-                <div className="flex gap-3">
-                  {socialLinks.items.map((item: SocialLink, index: number) => (
-                    <a
-                      key={index}
-                      href={item?.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={item?.title || "Social media link"}
-                      className="w-11 h-11 rounded-full flex items-center justify-center transition-colors duration-300 hover:bg-gold"
-                      style={{
-                        background: "rgba(227, 201, 161, 0.18)",
-                        color: "var(--luxury-gold-text)",
-                      }}
-                    >
-                      {item?.image ? (
-                        <Image
-                          src={item.image}
-                          alt={item.title || ""}
-                          width={18}
-                          height={18}
-                        />
-                      ) : (
-                        <i className={`${item?.icon} text-sm`}></i>
-                      )}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Newsletter */}
-            <Newsletter />
-          </div>
-        </div>
-
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24">
-          <div
-            className="h-px"
-            style={{ background: "var(--luxury-border)" }}
-          ></div>
-        </div>
-
-        {/* ── Columns ── */}
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
-            {/* Brand */}
-            <div className="lg:col-span-6 md:pe-20">
-              <Link href="/" className="inline-flex items-center gap-3 mb-5">
+      <footer className=" text-neutral-900">
+        {/* Dark feature bar: brand + newsletter + call button */}
+        <div className="mx-auto max-w-7xl px-6 pt-16 lg:px-10">
+          <div className="grid items-center gap-10 rounded-3xl  lg:grid-cols-12 ">
+            <div className="lg:col-span-4">
+              <Link href="/" className="mb-5 inline-block">
                 {logoUrl && (
-                  <Image
-                    src={logoUrl}
-                    alt={brandName}
-                    width={100}
-                    height={100}
-                    className=" w-auto object-contain"
-                  />
+                  <Image src={logoUrl} alt={brandName} width={80} height={80} className="object-contain" />
                 )}
               </Link>
               {description && (
-                <p
-                  className="leading-relaxed mb-4"
-                  style={{ color: "var(--luxury-muted)" }}
-                >
-                  {description}
-                </p>
+                <p className="line-clamp-4 text-sm font-light leading-relaxed">{description}</p>
               )}
             </div>
-
-            {/* Useful Links */}
-            <div className="lg:col-span-2">
-              <h4 className="luxury-label text-gold-text mb-4 text-base! font-bold!">
-                Useful Links
-              </h4>
-              <div className="luxury-divider mb-8"></div>
-              <div className="grid grid-cols-1 gap-6 md:gap-8">
-                <ul className="space-y-4 min-w-0">
-                  {linksColA.map((item) => (
-                    <li key={item.id}>
-                      <Link
-                        href={item.link}
-                        className="transition-colors duration-300"
-                        style={{ color: "var(--luxury-muted)" }}
-                      >
-                        {item.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+            <div className="lg:col-span-5">
+              <Newsletter />
+            </div>
+            {phoneNumbers[0] && (
+              <div className="lg:col-span-3 lg:text-right">
+                <a
+                  href={`tel:${phoneNumbers[0].replace(/\s+/g, "")}`}
+                  className="inline-flex items-center gap-3 rounded-full bg-red px-6 py-3 text-white font-semibold text-neutral-900 transition hover:bg-orange/55"
+                >
+                  <Phone className="h-5 w-5" />
+                  {phoneNumbers[0]}
+                </a>
               </div>
-            </div>
-
-            {/* Get In Touch */}
-            <div className="lg:col-span-4">
-              <h4 className="luxury-label text-gold-text mb-4 text-base! font-bold!">
-                Get In Touch
-              </h4>
-              <div className="luxury-divider mb-8"></div>
-              <ul className="space-y-5">
-                {fiscalAddress && (
-                  <li className="flex items-start gap-3">
-                    <MapPin
-                      className="w-4 h-4 mt-0.5 shrink-0"
-                      style={{ color: "var(--luxury-gold-text)" }}
-                    />
-                    <span style={{ color: "var(--luxury-muted)" }}>
-                      {fiscalAddress}
-                    </span>
-                  </li>
-                )}
-                {phoneNumbers.length > 0 && (
-                  <li className="flex  items-center gap-3">
-                    <Phone
-                      className="w-4 h-4 shrink-0"
-                      style={{ color: "var(--luxury-gold-text)" }}
-                    />
-                    <div className="flex flex-wrap items-center">
-                      {phoneNumbers.map((phone, index) => (
-                        <span key={phone} className="flex items-center">
-                          <a
-                            href={`tel:${phone.replace(/\s+/g, "")}`}
-                            className="transition-colors duration-300 hover:text-gold-text"
-                            style={{ color: "var(--luxury-muted)" }}
-                          >
-                            {phone}
-                          </a>
-                          {index < phoneNumbers.length - 1 && (
-                            <span style={{ color: "var(--luxury-muted)" }}>
-                              ,&nbsp;
-                            </span>
-                          )}
-                        </span>
-                      ))}
-                    </div>
-                  </li>
-                )}
-                {emailAddresses.length > 0 && (
-                  <li className="flex flex-wrap items-center gap-3">
-                    <Mail
-                      className="w-4 h-4 shrink-0"
-                      style={{ color: "var(--luxury-gold-text)" }}
-                    />
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                      {emailAddresses.map((email) => (
-                        <a
-                          key={email}
-                          href={`mailto:${email}`}
-                          className="transition-colors duration-300 hover:text-gold-text break-all"
-                          style={{ color: "var(--luxury-muted)" }}
-                        >
-                          {email}
-                        </a>
-                      ))}
-                    </div>
-                  </li>
-                )}
-              </ul>
-            </div>
+            )}
           </div>
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24">
-          <div
-            className="h-px"
-            style={{ background: "var(--luxury-border)" }}
-          ></div>
+        {/* Link columns */}
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-12 lg:px-10">
+          <div className="lg:col-span-5">
+            <h4 className={label}>Explore</h4>
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-3">
+              {menuItems.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    href={item.link}
+                    className="group inline-flex items-center gap-2 font-medium transition-colors hover:text-orange"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-orange transition-transform group-hover:scale-150" />
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-6 lg:col-span-4">
+            <h4 className={label}>Contact</h4>
+            {fiscalAddress && (
+              <p className="flex gap-3 text-sm">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0" /> {fiscalAddress}
+              </p>
+            )}
+            {phoneNumbers.length > 0 && (
+              <div className="flex gap-3 text-sm">
+                <Phone className="mt-0.5 h-4 w-4 shrink-0" />
+                <div className="flex flex-wrap gap-2">
+                  {phoneNumbers.map((phone, i) => (
+                    <span key={phone} className="flex gap-2">
+                      <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-orange">
+                        {phone}
+                      </a>
+                      {i < phoneNumbers.length - 1 && <span aria-hidden="true">|</span>}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {emailAddresses.length > 0 && (
+              <div className="flex gap-3 text-sm">
+                <Mail className="mt-0.5 h-4 w-4 shrink-0" />
+                <div className="flex flex-col gap-1">
+                  {emailAddresses.map((email) => (
+                    <a key={email} href={`mailto:${email}`} className="break-all hover:text-orange">
+                      {email}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {socialLinks?.items?.length > 0 && (
+            <div className="lg:col-span-3">
+              <h4 className={label}>Follow us</h4>
+              <div className="flex flex-wrap gap-2">
+                {socialLinks.items.map((item: SocialLink, index: number) => (
+                  <a
+                    key={index}
+                    href={item?.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item?.title || "Social media link"}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-orange  text-white transition hover:-translate-y-0.5 hover:bg-orange hover:text-white"
+                  >
+                    {item?.image ? (
+                      <Image src={item.image} alt={item.title || ""} width={16} height={16} />
+                    ) : (
+                      <i className={`${item?.icon} text-sm`}></i>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* ── Bottom bar ── */}
-        <div
-          className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 py-6 flex flex-col md:flex-row items-center justify-between gap-4"
-          style={{ color: "var(--luxury-muted)" }}
-        >
-          <p>
-            &copy; {new Date().getFullYear()} {brandName}. All Rights Reserved.
-            Developed by{" "}
-            <a
-              href="https://longtail.info"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium transition-colors hover:text-gold-text"
-              style={{ color: "var(--luxury-charcoal)" }}
-            >
-              Longtail e media
-            </a>
-            .
-          </p>
-          <div className="flex items-center gap-3">
-            <span>We Accept</span>
-            <div className="flex items-center gap-2">
-              <div
-                className="bg-white px-2 py-0.5 rounded-sm"
-                style={{ border: "1px solid var(--luxury-border)" }}
+        {/* Bottom bar */}
+        <div className="border-t border-neutral-900/15">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-6 text-sm md:flex-row lg:px-10">
+            <p>
+              &copy; {new Date().getFullYear()} {brandName}. All Rights Reserved. Developed by{" "}
+              <a
+                href="https://longtail.info"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold transition-colors hover:text-orange"
               >
-                <Image
-                  className="object-contain w-auto h-auto"
-                  src={visa}
-                  alt="Visa"
-                  width={30}
-                  height={30}
-                />
-              </div>
-              <div
-                className="bg-white px-2 py-0.5 rounded-sm"
-                style={{ border: "1px solid var(--luxury-border)" }}
-              >
-                <Image
-                  className="object-contain w-auto h-auto"
-                  src={amerciaexpress}
-                  alt="American Express"
-                  width={30}
-                  height={30}
-                />
-              </div>
-              <div
-                className="bg-white px-2 py-0.5 rounded-sm"
-                style={{ border: "1px solid var(--luxury-border)" }}
-              >
-                <Image
-                  className="object-contain w-auto h-auto"
-                  src={mastercard}
-                  alt="Mastercard"
-                  width={30}
-                  height={30}
-                />
-              </div>
-              <div
-                className="bg-white px-2 py-0.5 rounded-sm"
-                style={{ border: "1px solid var(--luxury-border)" }}
-              >
-                <Image
-                  className="object-contain w-auto h-auto"
-                  src={fonepay}
-                  alt="Fonepay"
-                  width={35}
-                  height={35}
-                />
+                Longtail e media
+              </a>
+              .
+            </p>
+            <div className="flex items-center gap-3">
+              <span>We Accept</span>
+              <div className="flex items-center gap-2">
+                {cards.map((src, i) => (
+                  <div key={cardAlt[i]} className="rounded-sm bg-white px-2 py-0.5">
+                    <Image className="h-auto w-auto object-contain" src={src} alt={cardAlt[i]} width={32} height={32} />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </footer>
 
-      {/* ── Floating Buttons ── */}
       <FloatingButtons whatsappNumber={siteRegulars?.whatsapp_a} hasVirtualTour={hasVirtualTour} />
     </>
   );

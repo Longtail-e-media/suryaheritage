@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Map as MapIcon, MapPin, ArrowUpRight } from "lucide-react";
+import { MapPin, ArrowUpRight } from "lucide-react";
 import type { Landmark } from "@/types";
 
 interface NearbyLandmarksClientProps {
@@ -32,71 +32,56 @@ export default function NearbyLandmarksClient({
   const mapSrc = extractMapSrc(activeLandmark.map_url);
 
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{ background: "var(--luxury-dark)" }}
-    >
-      {/* Decorative background — a huge, faint map glyph instead of a photo */}
-      <MapIcon
-        className="pointer-events-none absolute -right-16 -top-20 w-[420px] h-[420px] md:w-[600px] md:h-[600px] text-gold/[0.06] rotate-[8deg]"
-        strokeWidth={0.5}
-        aria-hidden="true"
+    <section className="relative overflow-hidden bg-cream">
+      {/* Single pin anchored to the section's left edge, behind the content */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/map-pointer.svg"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute bottom-16 left-2 hidden h-36 w-28 lg:block"
       />
-      <div
-        className="pointer-events-none absolute -bottom-40 -left-32 w-[420px] h-[420px] rounded-full blur-[140px] bg-gold/10"
-        aria-hidden="true"
-      />
-
-      <div className="relative max-w-[1400px] mx-auto py-20 px-6 md:px-12 lg:px-24">
+      <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-          <div>
-            <div className="luxury-label text-white mb-4">Explore The Area</div>
-            <div className="luxury-divider mb-6"></div>
-            <h2 className="luxury-section-title text-white">
-              Nearby Landmarks
-            </h2>
+        <div className="mb-12 flex flex-col items-center text-center animate-fade-in-up">
+          <div className="flex items-center gap-4">
+            <span className="h-px w-12 bg-gold" />
+            <span className="text-xs font-medium uppercase tracking-[.35em] text-gold">
+              Explore The Area
+            </span>
+            <span className="h-px w-12 bg-gold" />
           </div>
-          <p className="max-w-xs text-sm text-white/90 font-light leading-relaxed">
+          <h2 className="luxury-section-title mt-5 text-ink">
+            Nearby <em className="text-gold">Landmarks</em>
+          </h2>
+          <p className="mt-5 max-w-md text-sm font-light leading-relaxed text-ink/70">
             Everything worth seeing is only a short ride away — here&apos;s how
             close you really are.
           </p>
         </div>
 
-        {/* Numbered pill tabs */}
-        <div className="scrollbar-thin overflow-auto scrollbar-thumb-slate-900/60 scrollbar-thumb-white">
-          <div className="flex gap-3 mb-10">
+        {/* Landmark selector: horizontal tabs, scrolls on small screens */}
+        <div className="-mx-6 mb-8 overflow-x-auto px-6 pb-2 lg:mx-0 lg:px-0">
+          <div className="flex gap-3 ">
             {landmarks.map((landmark, idx) => {
               const active = landmark.id === activeLandmark.id;
               return (
                 <button
                   key={landmark.id}
                   onClick={() => setActiveTab(landmark.id)}
-                  className="group flex items-center gap-3 hover:cursor-pointer shrink-0 grow rounded-full px-5 py-3 transition-all duration-500"
-                  style={{
-                    border: `1px solid ${active ? "var(--luxury-gold)" : "var(--luxury-border)"}`,
-                    background: active
-                      ? "rgba(227, 201, 161, 0.08)"
-                      : "transparent",
-                  }}
+                  aria-pressed={active}
+                  className={`flex shrink-0 items-center gap-3 rounded-full border py-2.5 pr-5 pl-2.5 transition hover:cursor-pointer ${
+                    active
+                      ? "border-dark bg-brick shadow-lg shadow-brick/25"
+                      : "border-dark/15 text-ink/75 hover:border-gold"
+                  }`}
                 >
                   <span
-                    className="text-[0.65rem] tracking-widest"
-                    style={{
-                      color: active
-                        ? "var(--luxury-gold)"
-                        : "rgba(255,255,255,0.3)",
-                    }}
+                    className={`flex h-8 w-8 items-center justify-center rounded-full font-serif text-sm ${active ? "bg-red text-white" : "bg-brick/5 text-gold"}`}
                   >
-                    {String(idx + 1).padStart(2, "0")}
+                    {idx + 1}
                   </span>
-                  <span
-                    className={`text-xs uppercase tracking-[0.15em] transition-colors ${
-                      active
-                        ? "text-white"
-                        : "text-white/40 group-hover:text-white/70"
-                    }`}
-                  >
+                  <span className="text-xs font-medium uppercase tracking-[0.15em] whitespace-nowrap">
                     {landmark.title}
                   </span>
                 </button>
@@ -105,90 +90,63 @@ export default function NearbyLandmarksClient({
           </div>
         </div>
 
-        {/* Content panel */}
+        {/* One joined card: detail panel + map */}
         <div
           key={activeLandmark.id}
-          className="animate-fade-in-up grid md:grid-cols-12 border-white"
+          className="animate-fade-in-up grid overflow-hidden rounded-3xl  shadow-2xl shadow-brick/15 lg:grid-cols-5"
         >
-          {/* Text */}
-          <div className="relative flex flex-col justify-center md:col-span-5 lg:p-12 mt-5">
-            <span className="luxury-big-numeral  pointer-events-none absolute top-6 right-8 hidden md:inline select-none">
-              {String(activeIndex + 1).padStart(2, "0")}
+          <div className="flex flex-col justify-center bg-brick p-8  sm:p-10 lg:col-span-2">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold">
+              <MapPin className="h-5 w-5" />
             </span>
-
-            <h3 className="mb-5 text-2xl font-light tracking-tight text-white md:text-3xl">
+            {activeLandmark.distance && (
+              <p className="mt-8 font-serif text-5xl leading-none text-gold">
+                {activeLandmark.distance}
+              </p>
+            )}
+            <p className="mt-2 text-xs uppercase tracking-[.3em] ">
+              From the hotel
+            </p>
+            <h3
+              className="luxury-section-title mt-6 "
+              style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.25rem)" }}
+            >
               {activeLandmark.title}
             </h3>
             {activeLandmark.content && (
               <div
-                className="mb-8 text-[0.95rem] font-light leading-relaxed text-white"
+                className="mt-4 line-clamp-5 text-sm font-light leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: activeLandmark.content }}
               />
             )}
-
-            <div className="flex flex-wrap items-center gap-4">
-              {activeLandmark.distance && (
-                <div
-                  className="inline-flex items-center gap-3 px-5 py-3"
-                  style={{
-                    border: "1px solid var(--luxury-gold)",
-                    color: "var(--luxury-gold)",
-                  }}
-                >
-                  <MapPin className="h-4 w-4" strokeWidth={1.5} />
-                  <span className="text-sm font-light tracking-wider">
-                    {activeLandmark.distance}
-                  </span>
-                </div>
-              )}
-              {mapSrc && (
-                <a
-                  href={mapSrc}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white transition-colors "
-                >
-                  View on Map
-                  <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
-              )}
-            </div>
+            {mapSrc && (
+              <a
+                href={mapSrc}
+                target="_blank"
+                rel="noreferrer"
+                className="group mt-8 inline-flex w-fit items-center gap-3 rounded-full bg-gold px-6 py-3 text-xs font-medium uppercase tracking-[.2em] text-ink transition "
+              >
+                View on Map
+                <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            )}
           </div>
 
-          {/* Map, framed with gold corner accents */}
-          <div className="relative min-h-[320px] p-4 md:col-span-7 md:min-h-[420px] md:p-6 mt-5 lg:mt-0">
-            <div className="relative h-full min-h-[280px] w-full md:min-h-[380px]">
-              {mapSrc ? (
-                <iframe
-                  src={mapSrc}
-                  className="h-full min-h-[280px] w-full border-0 md:min-h-[380px]"
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={`Google map of ${activeLandmark.title}`}
-                />
-              ) : (
-                <div className="flex h-full min-h-[280px] items-center justify-center text-xs uppercase tracking-widest text-white/20 md:min-h-[380px]">
-                  Map unavailable
-                </div>
-              )}
-              <span
-                className="pointer-events-none absolute -top-2 -left-2 h-8 w-8 border-t-2 border-l-2"
-                style={{ borderColor: "var(--luxury-gold)" }}
+          <div className="relative min-h-[320px] bg-brick/10 lg:col-span-3 lg:min-h-[520px]">
+            {mapSrc ? (
+              <iframe
+                src={mapSrc}
+                className="absolute inset-0 h-full w-full border-0"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`Google map of ${activeLandmark.title}`}
               />
-              <span
-                className="pointer-events-none absolute -top-2 -right-2 h-8 w-8 border-t-2 border-r-2"
-                style={{ borderColor: "var(--luxury-gold)" }}
-              />
-              <span
-                className="pointer-events-none absolute -bottom-2 -left-2 h-8 w-8 border-b-2 border-l-2"
-                style={{ borderColor: "var(--luxury-gold)" }}
-              />
-              <span
-                className="pointer-events-none absolute -bottom-2 -right-2 h-8 w-8 border-b-2 border-r-2"
-                style={{ borderColor: "var(--luxury-gold)" }}
-              />
-            </div>
+            ) : (
+              <div className="flex h-full min-h-[320px] items-center justify-center text-xs uppercase tracking-widest text-ink/50">
+                Map unavailable
+              </div>
+            )}
           </div>
         </div>
       </div>

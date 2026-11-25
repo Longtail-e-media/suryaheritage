@@ -6,68 +6,15 @@
    ============================================================ */
 
 :root {
-  /* ---- Brand Color Palette ---- */
-  /* Black: PANTONE P Process Black C */
-  /* Was #231f20 (old black theme). Now aliased to the navy brand color
-     (--color-blue) that the navbar and CTAs already migrated to, so every
-     "dark section" sitewide (Rooms, About, Restaurant, Service, etc.) picks
-     up the current brand color instead of resolving to nothing. */
-  --color-orange: #f3d08c;
-  --color-red: #cb2129;
-  --luxury-green: #136b38;
-  --luxury-dark-alt: #2a2526;
-  --luxury-cream: #f5f0e8;
-  --luxury-cream-alt: #ece5d8;
-  --luxury-ivory: #faf8f4;
-  /* Gold: PANTONE 15-9 C */
-  --luxury-gold: #e3c9a1;
-  --luxury-gold-light: #ede0c4;
-  --luxury-gold-dim: #d4b27e;
-  /* Accessible gold for TEXT on light backgrounds. The brand gold (#e3c9a1)
-     scores only ~1.6:1 on white and fails WCAG AA for text. Use this darker
-     bronze (~5:1 on white) wherever gold is used as readable copy on a light
-     surface — e.g. className="text-gold-text". On dark surfaces the brand
-     gold is fine. */
-  --luxury-gold-text: #8a6a2c;
-  /* Black (same as dark for text) */
-  --luxury-charcoal: #231f20;
-  /* Taupe: PANTONE 170-6 C */
-  --luxury-muted: #020202;
-  --luxury-border: rgba(227, 201, 161, 0.25);
-  /* Sage: PANTONE 178-8 C */
-  --brand-sage: #868a79;
-  /* Light Gray: PANTONE 169-3 C */
-  --brand-light-gray: #cccccb;
 
-  /* ---- Background ---- */
-  --background: #ffffff;
-  --foreground: #231f20;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  /* Brand palette exposed as Tailwind utilities: text-gold, bg-gold, border-gold,
-     ring-gold, from-gold… plus opacity modifiers (text-gold/40). Change the brand
-     colour ONCE in the --luxury-* variables above to re-skin the whole site. */
-  --color-brand-base: var(--luxury-green); /* navbar + sidebar surface: change here to re-colour both */
-  --color-brand-red: var(--color-red);
-  --color-brand-orange: var(--color-orange);
-  --color-gold: var(--luxury-gold);
-  --color-gold-light: var(--luxury-gold-light);
-  --color-gold-dim: var(--luxury-gold-dim);
-  --color-gold-text: var(--luxury-gold-text);
-  --color-luxury-dark: var(--luxury-dark);
-  --color-luxury-cream: var(--luxury-cream);
-  /* New base brand palette (theme replication target): exposed as text-yellow,
-     bg-yellow, text-blue, bg-blue, border-blue… with opacity modifiers
-     (bg-yellow/25, text-blue/70). Root values live in --color-yellow /
-     --color-blue above. */
-  --color-yellow: var(--color-yellow);
-  --color-blue: var(--color-blue);
-  --font-sans: var(--font-product-sans);
-  --font-display: var(--font-heading);
-  --font-mono: var(--font-geist-mono);
+--color-red:#cb2129;
+--color-orange:#f1592a;
+--color-light-orange:#ebdbbd;
+
+
 }
 
 body {
@@ -731,4 +678,55 @@ body {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+/* About section scroll-reveal (toggled by AboutMotion) */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.d1 { transition-delay: 0.1s; }
+  .reveal.d2 { transition-delay: 0.2s; }
+  .reveal.d3 { transition-delay: 0.3s; }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* About section decoration */
+.lattice {
+  background-image:
+    linear-gradient(45deg, rgba(138,106,44,.06) 25%, transparent 25%, transparent 75%, rgba(138,106,44,.06) 75%),
+    linear-gradient(45deg, rgba(138,106,44,.06) 25%, transparent 25%, transparent 75%, rgba(138,106,44,.06) 75%);
+  background-size: 36px 36px;
+  background-position: 0 0, 18px 18px;
+}
+.img-zoom img { transition: transform 1.2s ease; }
+.img-zoom:hover img { transform: scale(1.06); }
+@media (prefers-reduced-motion: no-preference) {
+  .floaty { animation: floaty 5s ease-in-out infinite; }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Hall section (HallParallax + HallMotion) */
+.hall-num {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--luxury-gold, #c9a86a);
+  transition: color 0.4s ease;
+}
+.hall-row:hover .hall-num { color: var(--luxury-gold, #c9a86a); }
+.hall-row { transition: padding-left 0.4s ease, background-color 0.4s ease, opacity 0.8s ease, transform 0.8s ease; }
+.hall-row:hover { padding-left: 0.75rem; background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent); }
+.hall-frame { transition: transform 0.6s ease; }
+.hall-media:hover .hall-frame { transform: translate(10px, 10px); }
+.hall-img { transition: transform 1.2s ease; }
+.hall-media:hover .hall-img { transform: scale(1.05); }
+@media (prefers-reduced-motion: no-preference) {
+  .hall-bar { transform: scaleX(0); transform-origin: left; transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s; }
+  .in .hall-bar { transform: scaleX(1); }
 }

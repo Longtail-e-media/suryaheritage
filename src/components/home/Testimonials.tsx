@@ -45,19 +45,27 @@ export default function Testimonials({ testimonials }: { testimonials: Testimoni
   if (!testimonials || testimonials.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="max-w-[1400px] mx-auto py-20 px-6 md:px-12 lg:px-24">
+    <section className="relative overflow-hidden bg-cream">
+      <Quote
+        className="pointer-events-none absolute right-10 top-16 hidden h-48 w-48 text-gold opacity-30 lg:block"
+        strokeWidth={0.75}
+        aria-hidden="true"
+      />
+      <div className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-gold/15 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -bottom-40 -left-24 h-96 w-96 rounded-full bg-ember/10 blur-3xl" aria-hidden="true" />
+      <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-10">
 
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="luxury-label text-gold-text mb-4">
-            Guest Experiences
+        <div className="mb-16 flex flex-col items-center text-center">
+          <div className="flex items-center gap-4">
+            <span className="h-px w-12 bg-gold" />
+            <span className="text-xs font-medium uppercase tracking-[.35em] text-gold">
+              Guest Experiences
+            </span>
+            <span className="h-px w-12 bg-gold" />
           </div>
-          <div className="flex justify-center mb-8">
-            <div className="luxury-divider"></div>
-          </div>
-          <h2 className="luxury-section-title" style={{ color: "var(--luxury-charcoal)" }}>
-            What Our Guests Say
+          <h2 className="luxury-section-title mt-5 text-ink">
+            What Our Guests <em className="text-(--color-red)">Say</em>
           </h2>
         </div>
 
@@ -69,12 +77,15 @@ export default function Testimonials({ testimonials }: { testimonials: Testimoni
                 key={t.id}
                 className="flex-[0_0_100%] sm:flex-[0_0_85%] md:flex-[0_0_50%] min-w-0 px-3 md:px-4"
               >
-                <div className="luxury-card-hover h-full flex flex-col bg-white rounded-2xl border border-luxury-border p-8">
+                <div className="group relative h-full pb-4 pl-4 [--cut:polygon(8%_0,100%_0,100%_92%,92%_100%,0_100%,0_8%)]">
+                <div className="pointer-events-none absolute bottom-0 left-0 h-[calc(100%-1rem)] w-[calc(100%-1rem)] bg-gold/70 transition-colors group-hover:bg-gold [clip-path:var(--cut)]" />
+                <div className="relative flex h-full flex-col bg-white px-8 pb-8 pt-12 [clip-path:var(--cut)]">
+                  <Quote className="absolute right-8 top-6 h-10 w-10 text-gold/40 transition group-hover:text-gold" strokeWidth={1.25} />
 
                   {/* Author row */}
                   <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-12 h-12 rounded-full overflow-hidden shrink-0 flex items-center justify-center bg-luxury-dark text-white text-sm font-medium">
+                      <div className="w-12 h-12 rounded-full overflow-hidden shrink-0 flex items-center justify-center bg-(--color-red) text-gold font-serif text-lg">
                         {t.image ? (
                           // eslint-disable-next-line @next/next/no-img-element -- reviewer avatars come from arbitrary external hosts
                           <img
@@ -92,7 +103,7 @@ export default function Testimonials({ testimonials }: { testimonials: Testimoni
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <h6 className="font-medium text-base truncate" style={{ color: "var(--luxury-charcoal)" }}>
+                          <h6 className="truncate font-serif text-lg text-ink">
                             {t.name}
                           </h6>
                           {t.linksrc && (
@@ -115,7 +126,7 @@ export default function Testimonials({ testimonials }: { testimonials: Testimoni
                       </div>
                     </div>
 
-                    <div className="flex gap-0.5 shrink-0 pt-1" aria-label={`${t.rating ?? 5} out of 5 stars`}>
+                    <div className="flex gap-0.5 shrink-0 pt-1 mt-4" aria-label={`${t.rating ?? 5} out of 5 stars`}>
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
@@ -128,17 +139,17 @@ export default function Testimonials({ testimonials }: { testimonials: Testimoni
                   </div>
 
                   {/* Content */}
-                  <p className="leading-relaxed flex-1 line-clamp-6">
+                  <p className="flex-1 line-clamp-6 font-light leading-relaxed text-ink/75">
                     {t.content?.replace(/<[^>]+>/g, "")}
                   </p>
 
                   {/* Footer */}
-                  <div className="flex items-center justify-between pt-6 mt-6 border-t border-luxury-border">
+                  <div className="flex items-center justify-between pt-6 mt-6 border-t border-brick/10">
                     <span className="text-xs tracking-wider uppercase text-gold-text">
                       {t.via}
                     </span>
-                    <Quote className="w-8 h-8 text-gold" strokeWidth={1.5} />
                   </div>
+                </div>
                 </div>
               </div>
             ))}
@@ -156,7 +167,7 @@ export default function Testimonials({ testimonials }: { testimonials: Testimoni
                 aria-current={index === selectedIndex}
                 onClick={() => emblaApi?.scrollTo(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  index === selectedIndex ? "w-6 bg-gold" : "w-2 bg-luxury-muted/30 hover:bg-luxury-muted/50"
+                  index === selectedIndex ? "w-6 bg-(--color-red)" : "w-2 bg-ink/20 hover:bg-ink/40"
                 }`}
               />
             ))}

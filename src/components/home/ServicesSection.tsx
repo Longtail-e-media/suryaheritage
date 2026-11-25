@@ -60,47 +60,35 @@ export default async function ServicesSection() {
   if (services.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden bg-white">
-      {/* Ambient glow */}
-      <div
-        className="pointer-events-none absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full blur-[140px] bg-gold/10"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -bottom-48 -right-32 w-[460px] h-[460px] rounded-full blur-[150px] bg-gold/[0.08]"
-        aria-hidden="true"
-      />
+    <section className="relative overflow-hidden bg-cream">
+      {/* Single concierge-bell image anchored to the section's left edge, behind the content */}
 
-      {/* Faint dot texture behind the header */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-[0.35]"
-        style={{
-          backgroundImage:
-            "radial-gradient(var(--luxury-gold-dim) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-          maskImage:
-            "radial-gradient(ellipse 60% 100% at 50% 0%, black 0%, transparent 75%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 60% 100% at 50% 0%, black 0%, transparent 75%)",
-        }}
-        aria-hidden="true"
-      />
+      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-gold/15 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -bottom-40 -right-24 h-96 w-96 rounded-full bg-ember/10 blur-3xl" aria-hidden="true" />
 
-      <div className="relative max-w-[1400px] mx-auto pt-20 pb-24 px-6 md:px-12 lg:px-24">
+      <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="luxury-ornament justify-center luxury-label text-gold-text mb-6 animate-fade-in-up">
-            {header.label}
+        <div className="mb-16 flex flex-col items-center text-center animate-fade-in-up relative">
+            <Image
+        src="/service-bell.svg"
+        alt=""
+        aria-hidden
+        width={112}
+        height={90}
+        unoptimized
+        className="pointer-events-none absolute bottom-16 left-2 hidden lg:block"
+      />
+          <div className="flex items-center gap-4">
+            <span className="h-px w-12 bg-gold" />
+            <span className="text-xs font-medium uppercase tracking-[.35em] text-gold">
+              {header.label}
+            </span>
+            <span className="h-px w-12 bg-gold" />
           </div>
-          <h2
-            className="luxury-section-title animate-fade-in-up delay-200"
-            style={{ color: "var(--luxury-charcoal)" }}
-          >
-            {header.title}
-          </h2>
+          <h2 className="luxury-section-title mt-5 text-ink">{header.title}</h2>
         </div>
 
-        {/* Service Rows — full-width, alternating image/content sides */}
+        {/* Service Rows — alternating arched image / content */}
         <div className="flex flex-col gap-20 lg:gap-28">
           {services?.map((item: any, idx: number) => {
             const imgSrc =
@@ -115,81 +103,64 @@ export default async function ServicesSection() {
               .trim();
             const features = getFeaturePoints(description);
             const Icon = getServiceIcon(item);
-            // const href = `/service/${item.slug || ''}`;
             const reversed = idx % 2 === 1;
 
             return (
               <div
                 key={idx}
-                className={`flex flex-col ${reversed ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-10 lg:gap-20 animate-fade-in-up ${idx < services.length - 1 ? "pb-20 lg:pb-28 border-b" : ""}`}
-                style={{
-                  animationDelay: `${0.12 * idx}s`,
-                  borderColor: "var(--luxury-border)",
-                }}
+                className={`flex flex-col ${reversed ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-20 animate-fade-in-up`}
+                style={{ animationDelay: `${0.12 * idx}s` }}
               >
-                {/* Image */}
+                {/* Chamfered image with offset gold plate (same as Rooms) */}
                 <div className="w-full lg:w-1/2">
-                  <Link
-                    href={href}
-                    className="group relative block overflow-hidden shadow-2xl  rounded-2xl shadow-black/10 h-[300px] md:h-[420px] lg:h-[460px]"
-                  >
-                    {imgSrc && (
-                      <Image
-                        src={imgSrc}
-                        alt={altText}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                        className="object-cover transition-transform duration-[1200ms] ease-out"
-                      />
-                    )}
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className="absolute bottom-5 right-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-white bg-black/40 border border-white/15 backdrop-blur-md rounded-full px-4 py-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                      View
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </span>
-                  </Link>
+                  <div className="relative mx-auto max-w-xl pb-5 pl-5 [--cut:polygon(14%_0,100%_0,100%_86%,86%_100%,0_100%,0_14%)]">
+                    <div className="pointer-events-none absolute bottom-0 left-0 h-[calc(100%-1.25rem)] w-[calc(100%-1.25rem)] bg-gold/70 [clip-path:var(--cut)]" />
+                    <Link
+                      href={href}
+                      className="img-zoom group relative block h-[360px] overflow-hidden bg-brick [clip-path:var(--cut)] md:h-[480px]"
+                    >
+                      {imgSrc && (
+                        <Image
+                          src={imgSrc}
+                          alt={altText}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-brick/50 via-transparent to-transparent" />
+                      <span className="absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 translate-y-2 items-center gap-2 whitespace-nowrap rounded-full border border-white/20 bg-black/40 px-4 py-2 text-[11px] uppercase tracking-[0.25em] text-white opacity-0 backdrop-blur-md transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                        View
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                      </span>
+                    </Link>
+                  </div>
                 </div>
 
                 {/* Content */}
                 <div className="w-full lg:w-1/2">
-                  <div className="inline-flex items-center gap-3 mb-5">
-                    <span
-                      className="flex items-center justify-center w-11 h-11 rounded-full shrink-0"
-                      style={{ background: "var(--luxury-gold)" }}
-                    >
-                      <Icon
-                        className="w-5 h-5"
-                        style={{ color: "var(--luxury-dark)" }}
-                      />
+                  <div className="mb-5 flex items-center gap-4">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brick text-gold">
+                      <Icon className="h-5 w-5" />
                     </span>
-                    <span className="luxury-label text-gold-text">
+                    <span className="text-xs font-medium uppercase tracking-[.35em] text-gold">
                       {String(idx + 1).padStart(2, "0")} — {item.sub_title}
                     </span>
                   </div>
 
-                  <h3
-                    className="luxury-section-title mb-6"
-                    style={{
-                      color: "var(--luxury-charcoal)",
-                      fontSize: "clamp(1.8rem, 3vw, 2.75rem)",
-                    }}
-                  >
+                  <h3 className="luxury-section-title mb-6 text-ink" style={{ fontSize: "clamp(1.8rem, 3vw, 2.75rem)" }}>
                     {item.title}
                   </h3>
 
                   {features.length > 0 && (
-                    <ul className="space-y-3 mb-8">
+                    <ul className="mb-8 space-y-3">
                       {features.map((point, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <span
-                            className="mt-2 w-1.5 h-1.5 rounded-full shrink-0"
-                            style={{ background: "var(--luxury-gold)" }}
-                          />
-                          <span
-                            className="text-base leading-relaxed">
-                            {point}
-                          </span>
+                        <li
+                          key={i}
+                          className="flex items-start gap-3 rounded-2xl border border-brick/10 bg-white/60 px-5 py-4 text-base font-light leading-relaxed text-ink/75 transition hover:border-gold/60 hover:shadow-lg"
+                        >
+                          <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                          {point}
                         </li>
                       ))}
                     </ul>
@@ -197,10 +168,10 @@ export default async function ServicesSection() {
 
                   <Link
                     href={href}
-                    className="text-black/50! border-black/50! luxury-btn"
+                    className="group inline-flex items-center gap-3 rounded-full bg-(--color-red) px-7 py-3.5 text-xs font-medium uppercase tracking-[.2em] text-white shadow-lg shadow-(--color-red)/30 transition hover:bg-ember"
                   >
                     Explore {item.title}
-                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                    <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </Link>
                 </div>
               </div>

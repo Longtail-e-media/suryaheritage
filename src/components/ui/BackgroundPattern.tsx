@@ -34,7 +34,7 @@ export function BackgroundPattern({
   fade?: boolean;
   className?: string;
 }) {
-  const strokeColor = color === "gold" ? "var(--luxury-gold-dim)" : "var(--luxury-dark)";
+  const strokeColor = color === "gold" ? "var(--luxury-gold-dim)" : "var(--luxury-dark, #231f20)";
   const patternId = `diamond-lattice-${color}-${size}`;
 
   return (

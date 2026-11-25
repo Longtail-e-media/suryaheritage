@@ -37,7 +37,7 @@ const nextConfig: NextConfig = {
  allowedDevOrigins: ['192.168.18.53'],
   images: {
     // Serve modern formats — browsers that support AVIF/WebP get ~50% smaller files
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp", "image/webp"],
     // Responsive breakpoints covering mobile → retina desktop
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 64, 96, 128, 256],

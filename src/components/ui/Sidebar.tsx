@@ -36,7 +36,7 @@ export default function Sidebar({
           ? "circle(150% at calc(100% - 3.5rem) 3rem)"
           : "circle(0% at calc(100% - 3.5rem) 3rem)",
       }}
-      className={`fixed inset-0 z-[60] flex flex-col bg-brand-orange transition-[clip-path,visibility] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] lg:flex-row ${
+      className={`fixed inset-0 z-[60] flex flex-col bg-[#fff3dd] transition-[clip-path,visibility] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] lg:flex-row ${
         isOpen ? "visible" : "invisible"
       }`}
     >
@@ -45,7 +45,7 @@ export default function Sidebar({
         onClick={onClose}
         aria-label="Close navigation menu"
         tabIndex={isOpen ? 0 : -1}
-        className="group absolute right-5 top-5 z-10 h-12 w-12 rounded-full border border-brand-base/40 text-brand-base transition-all duration-300 hover:cursor-pointer hover:bg-brand-base hover:text-brand-base sm:right-8 sm:top-6"
+        className="group absolute right-5 top-5 z-10 h-12 w-12 rounded-full border border-brand-base/40 text-brand-base transition-all duration-300 hover:cursor-pointer hover:bg-brand-base sm:right-8 sm:top-6"
       >
         {[45, -45].map((deg) => (
           <span
@@ -85,13 +85,18 @@ export default function Sidebar({
                   isOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
                 }`}
               >
-                <div className="group flex items-center gap-4 py-3 sm:gap-6">
+                <div className="group flex items-center gap-4 py-4 sm:gap-6 sm:py-5">
                   <span
-                    className={`w-8 text-xs tabular-nums transition-colors ${
+                    className={`w-8 font-display text-sm italic tabular-nums transition-colors ${
                       active ? "text-brand-base" : "text-brand-base/50"
                     }`}
                   >
                     {String(index + 1).padStart(2, "0")}
+                    {active && (
+                      <span aria-hidden="true" className="ml-1 text-[8px] align-middle">
+                        ◆
+                      </span>
+                    )}
                   </span>
                   <NavLink
                     href={item.link}
@@ -100,8 +105,8 @@ export default function Sidebar({
                     className="min-w-0 flex-1"
                   >
                     <span
-                      className={`inline-block font-display text-3xl transition-all duration-300 group-hover:translate-x-3 group-hover:text-brand-base sm:text-5xl ${
-                        active ? "text-brand-base" : "text-brand-base/60"
+                      className={`relative inline-block bg-gradient-to-r from-brand-base to-brand-base bg-[length:0%_100%] bg-clip-text bg-no-repeat font-display text-2xl transition-all duration-500 group-hover:bg-[length:100%_100%] group-hover:text-black/35 group-hover:italic sm:text-4xl ${
+                        active ? "text-brand-base italic" : "text-luxury-dark"
                       }`}
                     >
                       {item.title}
@@ -117,7 +122,7 @@ export default function Sidebar({
                       aria-controls={submenuId}
                       aria-label={`${expanded ? "Collapse" : "Expand"} ${item.title} submenu`}
                       tabIndex={isOpen ? 0 : -1}
-                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-brand-base/30 text-brand-base transition-all hover:cursor-pointer hover:bg-brand-base hover:text-brand-base"
+                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-black/30  transition-all hover:cursor-pointer hover:text-black/35"
                     >
                       <ChevronDown
                         className={`h-4 w-4 transition-transform duration-300 ${
@@ -150,7 +155,7 @@ export default function Sidebar({
                           className={`rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.15em] transition-colors ${
                             isActiveLink(sub.link)
                               ? "border-brand-base bg-brand-base text-brand-base"
-                              : "border-brand-base/30 text-brand-base/80 hover:border-brand-base hover:bg-brand-base hover:text-brand-base"
+                              : "border-brand-base/30 text-brand-base/80 hover:border-brand-base hover:bg-brand-base hover:text-black/80"
                           }`}
                         >
                           {sub.title}
@@ -166,11 +171,34 @@ export default function Sidebar({
       </nav>
 
       {/* Contact panel */}
-      <aside className="relative shrink-0 overflow-hidden bg-white/40 px-6 py-10 text-brand-base sm:px-12 lg:flex lg:w-[36%] lg:flex-col lg:justify-end lg:px-14 lg:py-16">
+      <aside className="relative shrink-0 overflow-hidden bg-light-orange px-6 py-10 text-brand-base sm:px-12 lg:flex lg:w-[36%] lg:flex-col lg:justify-end lg:px-14 lg:py-16">
+        {/* Static geometric composition: diamond, circle, square, triangle */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute right-8 top-8 hidden h-56 w-56 text-brand-base lg:block"
+        >
+          <span className="absolute inset-4 rotate-45 border border-current opacity-30" />
+          <span className="absolute inset-12 rotate-45 bg-current opacity-10" />
+          <span className="absolute inset-0 rounded-full border border-current opacity-20" />
+          <span className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current opacity-25" />
+          <span className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 border border-current opacity-40" />
+          <span
+            style={{ clipPath: "polygon(50% 0, 100% 100%, 0 100%)" }}
+            className="absolute -bottom-3 right-6 h-8 w-8 bg-current opacity-30"
+          />
+        </div>
+        {/* Outlined vertical wordmark */}
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-base/10"
-        />
+          style={{
+            writingMode: "vertical-rl",
+            WebkitTextStroke: "1px currentColor",
+            WebkitTextFillColor: "transparent",
+          }}
+          className="pointer-events-none absolute -bottom-4 right-3 hidden select-none font-display text-[7rem] uppercase leading-none tracking-widest text-brand-base opacity-25 lg:block"
+        >
+          Heritage
+        </span>
         <span
           aria-hidden="true"
           className="pointer-events-none absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-white/30 blur-3xl"
@@ -179,8 +207,8 @@ export default function Sidebar({
           <p className="mb-3 text-[11px] uppercase tracking-[0.4em] text-brand-base/70">
             Reservations
           </p>
-          <p className="mb-8 font-display text-3xl leading-tight sm:text-4xl">
-            Plan your stay with us.
+          <p className="mb-8 border-l-2 border-brand-base pl-5 font-display text-3xl leading-tight sm:text-4xl">
+            Plan your stay <em className="font-normal">with us.</em>
           </p>
           {bookingHref && (
             <a

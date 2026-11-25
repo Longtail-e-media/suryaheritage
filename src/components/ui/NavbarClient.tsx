@@ -77,7 +77,7 @@ export default function NavbarClient({ menu, logoUrl, children }: NavbarClientPr
 
         <div className="flex items-center gap-3 sm:gap-4">
           <Link
-            href={siteRegulars?.booking_code ?? links.booking}
+            href="book"
             target="_blank"
             tabIndex={isSidebarOpen ? -1 : 0}
             className={`group flex items-center gap-2 rounded-full bg-red py-3 pl-6 pr-4 text-[11px] font-semibold uppercase tracking-[0.25em] text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${hidden}`}

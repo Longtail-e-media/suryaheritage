@@ -170,7 +170,7 @@ export default async function AboutSection() {
     <div className="reveal grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-gold/30 shadow-xl lg:grid-cols-4">
       <div className="bg-[#f5eae7] px-6 py-9 text-center text-gold ">
         <p className="font-serif text-5xl">
-          <span data-count={92}>92</span>
+          <span data-count={102}>102</span>
         </p>
         <p className="mt-2 text-xs uppercase tracking-[.25em] text-cream/85">
           Rooms

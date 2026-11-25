@@ -63,12 +63,8 @@ export default async function OfferSection() {
                   </div>
                 )}
                 <h3 className="text-2xl md:text-3xl font-light tracking-wide mb-4">{item.title}</h3>
-                {desc && <p className="opacity-80 leading-relaxed line-clamp-5 mb-8">{desc}</p>}
-                <p>{item.content}</p>
-                <Link href={`/offers/${item.slug}`} className="luxury-btn group inline-flex items-center gap-4 px-10 py-4">
-                  <span>View Offer</span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </Link>
+                {desc && <div className="opacity-80 leading-relaxed line-clamp-5 mb-8" dangerouslySetInnerHTML={{ __html: desc }} />}
+
               </div>
             </div>
           );

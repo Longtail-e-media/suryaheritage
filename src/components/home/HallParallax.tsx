@@ -5,10 +5,11 @@ import HallMotion from "./HallMotion";
 
 // area is sq.ft.; the bar under each chamber is drawn proportional to it.
 const CHAMBERS = [
-  { name: "Chamber 1", area: 960, guests: 70, use: "Board meetings & mid-sized events" },
-  { name: "Chamber 2", area: 975, guests: 65, use: "Workshops & smaller conferences" },
-  { name: "Chancelier", area: 2700, guests: 500, use: "Weddings, banquets & large conferences" },
+  { name: "Surya Hall", area: 960, guests: 250, use: "Board meetings & mid-sized events" },
+  { name: "Yashodhara Hall", area: 975, guests: 65, use: "Workshops & smaller conferences" },
+
 ];
+
 const MAX_AREA = Math.max(...CHAMBERS.map((c) => c.area));
 
 export default function HallParallax() {
@@ -91,7 +92,7 @@ export default function HallParallax() {
           <div className="relative aspect-[4/5] overflow-hidden [clip-path:polygon(0_0,calc(100%-48px)_0,100%_48px,100%_100%,0_100%)]">
             <div data-parallax className="absolute inset-x-0 -inset-y-6 will-change-transform">
               <Image
-                src="/hall.jpg"
+                src="/hall3.jpg"
                 alt="Event hall"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

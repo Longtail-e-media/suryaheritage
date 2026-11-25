@@ -11,7 +11,7 @@ export default function Newsletter() {
       </p>
       <form
         className="group flex w-full max-w-sm items-center border-b border-current/30 transition-colors focus-within:border-current"
-        action="https://hoteldiamondpalace.us6.list-manage.com/subscribe/post?u=013497d3d7f06885d7c80d1ef&amp;id=c55687e25d&amp;f_id=00d3eee5f0"
+        action=""
         method="post"
         name="mc-embedded-subscribe-form"
         target="_blank"
